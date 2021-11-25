@@ -11,8 +11,8 @@ class Rover
   end
 
   def print_info
-    @commands.each_char do |command|
-      @move_number += 1
+    @commands.each_char.with_index do |command, index|
+      @move_number = index
       action(command)
     end
     print "final position x: #{position[0]} y: #{position[1]} facing to: "
