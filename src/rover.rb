@@ -7,12 +7,12 @@ class Rover
     @position = position.split.first(2).map(&:to_i)
     @plateau = plateau.split.map(&:to_i)
     @commands = commands
-    @move_namber = 0
+    @move_number = 0
   end
 
   def print_info
     @commands.each_char do |command|
-      @move_namber += 1
+      @move_number += 1
       action(command)
     end
     print "final position x: #{position[0]} y: #{position[1]} facing to: "
@@ -70,7 +70,7 @@ class Rover
     if in_bounds?(next_position)
       @position = next_position
     else
-      p "At move #{@move_namber} in position #{next_position} rover want out of plateau"
+      p "At move #{@move_number} in position #{next_position} rover want out of plateau"
     end
   end
 
