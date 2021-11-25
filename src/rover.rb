@@ -7,11 +7,14 @@ class Rover
     @position = position.split.first(2).map(&:to_i)
     @plateau = plateau.split.map(&:to_i)
     @commands = commands
-    @command_number = 0
+    @move_namber = 0
   end
 
   def print_info
-    @commands.each_char { |command| start command }
+    @commands.each_char do |command|
+      @move_namber += 1
+      action(command)
+    end
     print "final position x: #{position[0]} y: #{position[1]} facing to: "
     case direction
     when 'N'
@@ -27,9 +30,8 @@ class Rover
 
   private
 
-  def start(action)
-    @command_number += 1
-    case action.upcase
+  def action(command)
+    case command.upcase
     when 'R'
       turn_right
     when 'L'
@@ -37,7 +39,7 @@ class Rover
     when 'M'
       move
     else
-      p "Wrong input: #{action}"
+      p "Wrong input: #{command}"
     end
   end
 
@@ -65,10 +67,10 @@ class Rover
 
   def move
     next_position = find_next_position
-    if end_of_plateau?(next_position)
+    if in_bounds?(next_position)
       @position = next_position
     else
-      p "By command #{@command_number} in position #{next_position} rover want out of plateau"
+      p "At move #{@move_namber} in position #{next_position} rover want out of plateau"
     end
   end
 
@@ -87,7 +89,7 @@ class Rover
     next_position
   end
 
-  def end_of_plateau?(next_position)
-    (0..plateau[0]).include?(next_position[0]) && (1..plateau[1]).include?(next_position[1])
+  def in_bounds?(next_position)
+    (0..plateau[0]).include?(next_position[0]) && (0..plateau[1]).include?(next_position[1])
   end
 end
