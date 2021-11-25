@@ -1,18 +1,93 @@
 class Rover
-  attr_reader :plateau, :start_position, :rover_command
+  MAIN_DIRECTIONS = %w[S W N E].freeze
+  attr_reader :plateau, :start_position, :rover_command, :direction, :position
 
-  def initialize(plateau, start_position, rover_command)
-    @plateau = plateau
-    @start_position = start_position
-    @rover_command = rover_command
+  def initialize(plateau, position, commands)
+    @direction = position.split[2]
+    @position = position.split.first(2).map(&:to_i)
+    @plateau = plateau.split.map(&:to_i)
+    @commands = commands
+    @command_number = 0
   end
 
   def print_info
-    puts "good luck!"
-    puts "The plateau dimensions is #{plateau}"
-    puts "The rover start position is #{start_position}"
-    puts "The command is #{rover_command}"
+    @commands.each_char { |command| start command }
+    print "final position x: #{position[0]} y: #{position[1]} facing to: "
+    case direction
+    when 'N'
+      print "North\n"
+    when 'S'
+      print "South\n"
+    when 'E'
+      print "East\n"
+    when 'W'
+      print "West\n"
+    end
+  end
 
-    true
+  private
+
+  def start(action)
+    @command_number += 1
+    case action.upcase
+    when 'R'
+      turn_right
+    when 'L'
+      turn_left
+    when 'M'
+      move
+    else
+      p "Wrong input: #{action}"
+    end
+  end
+
+  def turn_right
+    curent_index = MAIN_DIRECTIONS.index(direction)
+
+    @direction = case curent_index
+                 when 0..2
+                   MAIN_DIRECTIONS[curent_index + 1]
+                 when 3
+                   MAIN_DIRECTIONS[0]
+                 end
+  end
+
+  def turn_left
+    curent_index = MAIN_DIRECTIONS.index(direction)
+
+    @direction = case curent_index
+                 when 1..3
+                   MAIN_DIRECTIONS[curent_index - 1]
+                 when 0
+                   MAIN_DIRECTIONS[3]
+                 end
+  end
+
+  def move
+    next_position = find_next_position
+    if end_of_plateau?(next_position)
+      @position = next_position
+    else
+      p "By command #{@command_number} in position #{next_position} rover want out of plateau"
+    end
+  end
+
+  def find_next_position
+    next_position = position.dup
+    case @direction
+    when 'N'
+      next_position[1] += 1
+    when 'E'
+      next_position[0] += 1
+    when 'S'
+      next_position[1] -= 1
+    when 'W'
+      next_position[0] -= 1
+    end
+    next_position
+  end
+
+  def end_of_plateau?(next_position)
+    (0..plateau[0]).include?(next_position[0]) && (1..plateau[1]).include?(next_position[1])
   end
 end
