@@ -1,6 +1,6 @@
 class Rover
   MAIN_DIRECTIONS = %w[S W N E].freeze
-  attr_reader :plateau, :start_position, :rover_command, :direction, :position
+  attr_reader :plateau, :direction, :position
 
   def initialize(plateau, position, commands)
     @direction = position.split[2]
@@ -39,7 +39,7 @@ class Rover
     when 'M'
       move
     else
-      p "Wrong input: #{command}"
+      p "Wrong input: #{command} in position #{next_position}"
     end
   end
 

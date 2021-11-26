@@ -39,5 +39,12 @@ describe Rover do
       expect(rover.direction).to eq 'E'
       expect(rover.position).to eq [1, 2]
     end
+
+    it 'when given input is wrong' do
+      rover = Rover.new('5 5', '1 1 N', 'DFSDDSA')
+      rover.print_info
+      expect(rover.direction).to eq 'N'
+      expect(rover.position).to eq [1, 1]
+    end
   end
 end
