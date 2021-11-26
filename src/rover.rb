@@ -39,7 +39,7 @@ class Rover
     when 'M'
       move
     else
-      p "Wrong input: #{command} in position #{next_position}"
+      p "Wrong input: #{command} in position #{position}"
     end
   end
 
