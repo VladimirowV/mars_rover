@@ -1,11 +1,12 @@
+require_relative './plateau'
 class Rover
   MAIN_DIRECTIONS = %w[S W N E].freeze
-  attr_reader :plateau, :direction, :position
+  attr_reader :direction, :position
 
   def initialize(plateau, position, commands)
     @direction = position.split[2]
     @position = position.split.first(2).map(&:to_i)
-    @plateau = plateau.split.map(&:to_i)
+    @plateau = Plateau.new plateau
     @commands = commands
     @move_number = 0
   end
@@ -67,7 +68,7 @@ class Rover
 
   def move
     next_position = find_next_position
-    if in_bounds?(next_position)
+    if @plateau.in_bounds?(next_position)
       @position = next_position
     else
       p "At move #{@move_number} in position #{next_position} rover want out of plateau"
@@ -87,9 +88,5 @@ class Rover
       next_position[0] -= 1
     end
     next_position
-  end
-
-  def in_bounds?(next_position)
-    (0..plateau[0]).include?(next_position[0]) && (0..plateau[1]).include?(next_position[1])
   end
 end
